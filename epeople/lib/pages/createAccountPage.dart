@@ -1,5 +1,12 @@
+import 'dart:convert';
+
+import 'package:epeople/models/User.dart';
+import 'package:epeople/widget/authentification/modalInformation.dart';
+import 'package:epeople/widget/authentification/modalLoaging.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
+
 
 class Createaccountpage extends StatefulWidget {
   const Createaccountpage({super.key});
@@ -9,6 +16,97 @@ class Createaccountpage extends StatefulWidget {
 }
 
 class _CreateaccountpageState extends State<Createaccountpage> {
+
+  final TextEditingController nomController = TextEditingController();
+  final TextEditingController prenomController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+
+  void dispose() {
+    nomController.dispose();
+    prenomController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  void initState() {
+    super.initState();
+  }
+
+  // fonction pour creer un utilisateur
+  void _createAccount() {
+
+   showLoadingDialog(context, 'Création de compte en cours...');
+
+    User user = User(
+      id: 1,
+      nom: nomController.text,
+      prenom: prenomController.text,
+      contact: phoneController.text,
+      email: emailController.text,
+      username: usernameController.text,
+      motDePasse: passwordController.text,
+    );
+  
+    // pour enregistrer l'utilisateur dans la base de données
+    user.sendUserToApi('https://jsonplaceholder.typicode.com/users', user.toJson())
+    .then((value) {
+      Navigator.pop(context);
+      showInformationDialog(context, 'Compte créé avec succès',true);
+      // Navigator.pushNamed(context, '/login');
+    })
+    .catchError((error) {
+      Navigator.pop(context);
+      showInformationDialog(context, 'Une erreur s\'est produite lors de la création du compte', false);
+      print('Erreur: $error');
+    });
+
+    user.signUp("avydevy@gmail.com", 'password');
+  }
+
+  Future<void> sendDataToApi() async {
+    // URL de l'API (remplace par ton endpoint réel)
+    final String apiUrl = 'http://52.56.190.142:81/authCovoitureur/register_covoitureur';
+
+    // Données à envoyer (par exemple, un objet JSON)
+    final Map<String, dynamic> data = {
+      'nom': nomController.text,
+      'prenom': prenomController.text,
+      'email':  emailController.text,
+      'contact': phoneController.text,
+      'sexe': true,
+      'mot_de_passe': passwordController.text,
+      'username': usernameController.text,
+    };
+
+    try {
+      // Envoi de la requête POST
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json', // Indique que les données sont en JSON
+        },
+        body: jsonEncode(data), // Convertit les données en JSON
+      );
+
+      // Vérification de la réponse
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('Données envoyées avec succès : ${response.body}');
+      } else {
+        print('Erreur lors de l’envoi : ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Une erreur est survenue : $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,6 +206,7 @@ class _CreateaccountpageState extends State<Createaccountpage> {
                                     border: Border(bottom: BorderSide(color: Colors.grey[200]!))
                                   ),
                                   child: TextField(
+                                    controller: nomController,
                                     keyboardType: TextInputType.name,
                                     decoration: InputDecoration(
                                       hintText: "Nom",
@@ -122,6 +221,7 @@ class _CreateaccountpageState extends State<Createaccountpage> {
                                     border: Border(bottom: BorderSide(color: Colors.grey[200]!))
                                   ),
                                   child: TextField(
+                                    controller: prenomController,
                                     keyboardType: TextInputType.name,
                                     decoration: InputDecoration(
                                       hintText: "Prenom(s)",
@@ -156,6 +256,7 @@ class _CreateaccountpageState extends State<Createaccountpage> {
                                     border: Border(bottom: BorderSide(color: Colors.grey[200]!))
                                   ),
                                   child: TextField(
+                                    controller: phoneController,
                                     keyboardType: TextInputType.phone,
                                     decoration: InputDecoration(
                                       hintText: "Numéro de téléphone",
@@ -171,6 +272,7 @@ class _CreateaccountpageState extends State<Createaccountpage> {
                                     border: Border(bottom: BorderSide(color: Colors.grey[200]!))
                                   ),
                                   child: TextField(
+                                    controller: emailController,
                                     keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
                                       hintText: "Email",
@@ -206,6 +308,7 @@ class _CreateaccountpageState extends State<Createaccountpage> {
                                     border: Border(bottom: BorderSide(color: Colors.grey[200]!))
                                   ),
                                   child: TextField(
+                                    controller: usernameController,
                                     keyboardType: TextInputType.name,
                                     decoration: InputDecoration(
                                       hintText: "Nom d'utilisateur",
@@ -221,6 +324,7 @@ class _CreateaccountpageState extends State<Createaccountpage> {
                                     border: Border(bottom: BorderSide(color: Colors.grey[200]!))
                                   ),
                                   child: TextField(
+                                    controller: passwordController,
                                     keyboardType: TextInputType.visiblePassword,
                                     obscureText: true,
                                     decoration: InputDecoration(
@@ -237,6 +341,7 @@ class _CreateaccountpageState extends State<Createaccountpage> {
                                     border: Border(bottom: BorderSide(color: Colors.grey[200]!))
                                   ),
                                   child: TextField(
+                                    controller: confirmPasswordController,
                                     decoration: InputDecoration(
                                       hintText: "Confirmer le mot de passe",
                                       prefixIcon: Icon(FontAwesomeIcons.lock),
@@ -254,7 +359,7 @@ class _CreateaccountpageState extends State<Createaccountpage> {
 
                           GestureDetector(
                             onTap: () {
-                              print("je m'inscris");
+                              sendDataToApi();
                             },
                             child: Container(
                               height: 40,

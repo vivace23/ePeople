@@ -1,5 +1,10 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../widget/authentification/modalInformation.dart';
+import '../widget/authentification/modalLoaging.dart';
 
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
@@ -10,7 +15,7 @@ class Loginpage extends StatefulWidget {
 
 class _LoginpageState extends State<Loginpage> {
 
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,19 +117,24 @@ class _LoginpageState extends State<Loginpage> {
                           SizedBox(height: 8,),
                           Text("Mot de passe oublié?", style: TextStyle(color: Colors.grey),),
                           SizedBox(height: 10,),
-                          Container(
-                            height: 40,
-                            margin: EdgeInsets.symmetric(horizontal: 50),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              gradient: LinearGradient(
-                              colors: [Colors.green, Colors.white],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
+                          GestureDetector(
+                            onTap: () {
+
+                            },
+                            child: Container(
+                              height: 40,
+                              margin: EdgeInsets.symmetric(horizontal: 50),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                gradient: LinearGradient(
+                                colors: [Colors.green, Colors.white],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                ),
                               ),
-                            ),
-                            child: Center(
-                              child: Text("Se connecter", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                              child: Center(
+                                child: Text("Se connecter", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                              ),
                             ),
                           ),
                           SizedBox(height: 20,),

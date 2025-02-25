@@ -1,3 +1,5 @@
+import 'package:epeople/pages/test.dart';
+import 'package:epeople/pages/sendData.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -11,12 +13,12 @@ class Principalpage extends StatefulWidget {
 class _PrincipalpageState extends State<Principalpage> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _pages = <Widget>[
-    Center(child: Text('Home Page')),
-    Center(child: Text('Search Page')),
-    Center(child: Text('Add Page')),
-    Center(child: Text('Likes Page')),
-    Center(child: Text('Profile Page')),
+  static List<Widget> _pages = <Widget>[
+    const Center(child: Text('Home Page')),
+    const Center(child: Text('Search Page')),
+    const Center(child: Text('Add Page')),
+    SendData(),
+    DataPage()
   ];
 
   void _onItemTapped(int index) {

@@ -3,15 +3,28 @@ import 'package:epeople/pages/loginOrcreataccountPage.dart';
 import 'package:epeople/pages/loginPage.dart';
 import 'package:epeople/pages/principalPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main() async{
+  await dotenv.load(fileName: ".env");
+  
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+  );
+
   runApp(const MyApp());
 }
+final supabase = Supabase.instance.client;
+
 
 
 class AuthService {
-  bool isAuthenticated = true;
+  bool isAuthenticated = false;
   String? userRole;
 }
 
