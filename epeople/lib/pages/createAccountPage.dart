@@ -1,8 +1,5 @@
 import 'dart:convert';
 
-import 'package:epeople/models/User.dart';
-import 'package:epeople/widget/authentification/modalInformation.dart';
-import 'package:epeople/widget/authentification/modalLoaging.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -40,36 +37,6 @@ class _CreateaccountpageState extends State<Createaccountpage> {
     super.initState();
   }
 
-  // fonction pour creer un utilisateur
-  void _createAccount() {
-
-   showLoadingDialog(context, 'Création de compte en cours...');
-
-    User user = User(
-      id: 1,
-      nom: nomController.text,
-      prenom: prenomController.text,
-      contact: phoneController.text,
-      email: emailController.text,
-      username: usernameController.text,
-      motDePasse: passwordController.text,
-    );
-  
-    // pour enregistrer l'utilisateur dans la base de données
-    user.sendUserToApi('https://jsonplaceholder.typicode.com/users', user.toJson())
-    .then((value) {
-      Navigator.pop(context);
-      showInformationDialog(context, 'Compte créé avec succès',true);
-      // Navigator.pushNamed(context, '/login');
-    })
-    .catchError((error) {
-      Navigator.pop(context);
-      showInformationDialog(context, 'Une erreur s\'est produite lors de la création du compte', false);
-      print('Erreur: $error');
-    });
-
-    user.signUp("avydevy@gmail.com", 'password');
-  }
 
   Future<void> sendDataToApi() async {
     // URL de l'API (remplace par ton endpoint réel)

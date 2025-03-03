@@ -1,5 +1,3 @@
-import 'package:epeople/pages/test.dart';
-import 'package:epeople/pages/sendData.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -17,8 +15,6 @@ class _PrincipalpageState extends State<Principalpage> {
     const Center(child: Text('Home Page')),
     const Center(child: Text('Search Page')),
     const Center(child: Text('Add Page')),
-    SendData(),
-    DataPage()
   ];
 
   void _onItemTapped(int index) {
